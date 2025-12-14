@@ -9,7 +9,6 @@ import {
   Button,
   TextField,
   Divider,
-  Alert,
   CircularProgress,
 } from "@mui/material";
 import { Edit, Save, PhotoCamera } from "@mui/icons-material";
@@ -221,7 +220,9 @@ export const ProfilePage = () => {
                     fullWidth
                     label="Role"
                     value={
-                      user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)
+                      user?.role
+                        ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
+                        : ""
                     }
                     disabled
                   />

@@ -17,27 +17,13 @@ import {
   Skeleton,
   Grid,
 } from "@mui/material";
-import { Visibility, LocalShipping } from "@mui/icons-material";
+import { Visibility } from "@mui/icons-material";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ordersApi } from "@/api/orders";
 import type { Order } from "@/types";
 import toast from "react-hot-toast";
 
-const statusColors: Record<string, "warning" | "info" | "success" | "error"> = {
-  created: "warning",
-  paid: "info",
-  processing: "info",
-  shipped: "info",
-  delivered: "success",
-  cancelled: "error",
-  failed: "error",
-};
-
-const paymentStatusColors: Record<string, "warning" | "success" | "error"> = {
-  pending: "warning",
-  paid: "success",
-  failed: "error",
-};
+// status and payment color maps were removed because they were unused.
 
 export const OrdersManagement = () => {
   const navigate = useNavigate();
@@ -233,7 +219,9 @@ export const OrdersManagement = () => {
                     <IconButton
                       color="primary"
                       onClick={() => navigate(`/orders/${order._id}`)}
-                    ></IconButton>
+                    >
+                      <Visibility />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))

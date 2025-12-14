@@ -10,7 +10,6 @@ import {
   ListItemIcon,
   IconButton,
   Button,
-  Chip,
   Divider,
   Pagination,
   Skeleton,
@@ -48,14 +47,14 @@ export const NotificationsPage = () => {
   });
 
   const markReadMutation = useMutation({
-    mutationFn: notificationsApi.markRead,
+    mutationFn: (id: string) => notificationsApi.markAsRead(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
   });
 
   const markAllReadMutation = useMutation({
-    mutationFn: notificationsApi.markAllRead,
+    mutationFn: () => notificationsApi.markAllAsRead(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
       toast.success("All notifications marked as read");
@@ -63,7 +62,7 @@ export const NotificationsPage = () => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: notificationsApi.delete,
+    mutationFn: (id: string) => notificationsApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
       toast.success("Notification deleted");
@@ -72,9 +71,7 @@ export const NotificationsPage = () => {
 
   const notifications = data?.data?.notifications || [];
   const pagination = data?.data?.pagination;
-  const unreadCount = notifications.filter(
-    (n: Notification) => !n.isRead
-  ).length;
+  const unreadCount = notifications.filter((n: Notification) => !n.read).length;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -165,16 +162,14 @@ export const NotificationsPage = () => {
               <Box key={notification._id}>
                 <ListItem
                   sx={{
-                    bgcolor: notification.isRead
-                      ? "transparent"
-                      : "action.hover",
-                    cursor: notification.isRead ? "default" : "pointer",
+                    bgcolor: notification.read ? "transparent" : "action.hover",
+                    cursor: notification.read ? "default" : "pointer",
                     "&:hover": {
                       bgcolor: "action.hover",
                     },
                   }}
                   onClick={() => {
-                    if (!notification.isRead) {
+                    if (!notification.read) {
                       markReadMutation.mutate(notification._id);
                     }
                   }}
@@ -192,7 +187,7 @@ export const NotificationsPage = () => {
                   }
                 >
                   <ListItemIcon>
-                    {!notification.isRead && (
+                    {!notification.read && (
                       <Circle
                         sx={{
                           fontSize: 10,
@@ -209,7 +204,7 @@ export const NotificationsPage = () => {
                   <ListItemText
                     primary={
                       <Typography
-                        fontWeight={notification.isRead ? 400 : 600}
+                        fontWeight={notification.read ? 400 : 600}
                         sx={{ pr: 4 }}
                       >
                         {notification.title}

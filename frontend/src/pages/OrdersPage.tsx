@@ -32,11 +32,7 @@ const statusColors: Record<string, "warning" | "info" | "success" | "error"> = {
   cancelled: "error",
 };
 
-const paymentStatusColors: Record<string, "warning" | "success" | "error"> = {
-  pending: "warning",
-  paid: "success",
-  failed: "error",
-};
+// payment status coloring consolidated into statusColors above
 
 export const OrdersPage = () => {
   const navigate = useNavigate();
@@ -170,13 +166,17 @@ export const OrdersPage = () => {
                   <TableCell>
                     <Chip
                       label={
-                        order.paymentStatus
-                          ? order.paymentStatus.charAt(0).toUpperCase() +
-                            order.paymentStatus.slice(1)
+                        order.status === "paid"
+                          ? "Paid"
+                          : order.status
+                          ? order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)
                           : "Unknown"
                       }
                       color={
-                        paymentStatusColors[order.paymentStatus] || "default"
+                        order.status === "paid"
+                          ? "success"
+                          : statusColors[order.status] || "default"
                       }
                       size="small"
                       variant="outlined"

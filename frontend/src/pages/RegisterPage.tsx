@@ -12,12 +12,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import {
-  Visibility,
-  VisibilityOff,
-  Email,
-  CheckCircle,
-} from "@mui/icons-material";
+import { Visibility, VisibilityOff, Email } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

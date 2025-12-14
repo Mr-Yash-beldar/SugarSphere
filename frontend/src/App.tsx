@@ -14,7 +14,6 @@ import {
   HomePage,
   LoginPage,
   RegisterPage,
-  EmailVerificationPage,
   ForgotPasswordPage,
   ResetPasswordPage,
   VerifyEmailPage,
@@ -50,7 +49,7 @@ function App() {
 
   useEffect(() => {
     const checkServerConnection = async () => {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
       const maxRetries = 10;
       let retries = 0;
 
@@ -184,7 +183,7 @@ function App() {
               <Route
                 path="admin"
                 element={
-                  <ProtectedRoute requiredRole="admin">
+                  <ProtectedRoute requireAdmin>
                     <AdminSidebar>
                       <AdminDashboard />
                     </AdminSidebar>
@@ -194,7 +193,7 @@ function App() {
               <Route
                 path="admin/sweets"
                 element={
-                  <ProtectedRoute requiredRole="admin">
+                  <ProtectedRoute requireAdmin>
                     <AdminSidebar>
                       <SweetsManagement />
                     </AdminSidebar>
@@ -204,7 +203,7 @@ function App() {
               <Route
                 path="admin/users"
                 element={
-                  <ProtectedRoute requiredRole="admin">
+                  <ProtectedRoute requireAdmin>
                     <AdminSidebar>
                       <UsersManagement />
                     </AdminSidebar>
@@ -214,7 +213,7 @@ function App() {
               <Route
                 path="admin/orders"
                 element={
-                  <ProtectedRoute requiredRole="admin">
+                  <ProtectedRoute requireAdmin>
                     <AdminSidebar>
                       <OrdersManagement />
                     </AdminSidebar>
