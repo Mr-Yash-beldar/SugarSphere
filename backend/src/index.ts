@@ -18,12 +18,29 @@ initializeSocketIO(httpServer);
 
 // Security middleware
 app.use(helmet());
-app.use(cors({
-  origin: config.clientUrl,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://sugarsphere.vercel.app',
+  'https://sugarsphere.developerverse.tech',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow server-to-server calls, health checks, Postman
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked: ${origin}`));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Rate limiting
 const limiter = rateLimit({
